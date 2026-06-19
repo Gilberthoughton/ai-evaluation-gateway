@@ -52,7 +52,7 @@ Two complementary, append-only records:
 - **Mutable rows with an `updated_at` column (rejected):** loses history and enables silent edits —
   unacceptable for evaluation data.
 - **Full event sourcing of all aggregates (rejected as overkill):** the order-platform project shows
-  event sourcing where it pays off; here, append-only history for *evaluations* plus a cross-cutting
+  event sourcing where it pays off; here, append-only history for _evaluations_ plus a cross-cutting
   audit log delivers the needed guarantees without sourcing every entity.
 - **Database triggers for audit (considered):** robust, but couples audit semantics to the schema and is
   harder to enrich with application context (actor, correlation id); the app-layer + restricted DB

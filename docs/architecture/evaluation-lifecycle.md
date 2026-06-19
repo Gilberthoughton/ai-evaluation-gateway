@@ -91,11 +91,11 @@ A correction posts a new score **version** (never an edit); the prior version an
 
 ## Async pipeline (queues)
 
-| Queue | Trigger | Worker does | Failure handling |
-|-------|---------|-------------|------------------|
-| `evaluation.automated` | evaluation created | static/structural checks; persist results; advance state | retry+backoff → `…​.dead` DLQ → `FAILED` |
-| `evaluation.assignment` | checks completed | assign to a reviewer / pool; advance to `AWAITING_REVIEW`/`UNDER_REVIEW` | retry; admin can reassign |
-| `audit` (fan-out) | any auditable action | write audit entry asynchronously | retry; never blocks the request |
+| Queue                   | Trigger              | Worker does                                                              | Failure handling                         |
+| ----------------------- | -------------------- | ------------------------------------------------------------------------ | ---------------------------------------- |
+| `evaluation.automated`  | evaluation created   | static/structural checks; persist results; advance state                 | retry+backoff → `…​.dead` DLQ → `FAILED` |
+| `evaluation.assignment` | checks completed     | assign to a reviewer / pool; advance to `AWAITING_REVIEW`/`UNDER_REVIEW` | retry; admin can reassign                |
+| `audit` (fan-out)       | any auditable action | write audit entry asynchronously                                         | retry; never blocks the request          |
 
 Every job carries the originating request's **correlation id**, so an evaluation's API log line and its
 worker log lines share one id ([ADR 0008](../adr/0008-logging-and-error-model.md)).

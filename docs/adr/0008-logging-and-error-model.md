@@ -23,8 +23,13 @@ privacy); payloads are referenced by id.
 **RFC 7807 `application/problem+json`** responses:
 
 ```json
-{ "type": "about:blank", "title": "Forbidden", "status": 403,
-  "detail": "Reviewer may only score assigned evaluations", "correlationId": "..." }
+{
+  "type": "about:blank",
+  "title": "Forbidden",
+  "status": 403,
+  "detail": "Reviewer may only score assigned evaluations",
+  "correlationId": "..."
+}
 ```
 
 Unexpected errors return a generic 500 problem (no internals leaked) while the full error + stack is

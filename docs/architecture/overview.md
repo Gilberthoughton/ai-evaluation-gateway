@@ -118,12 +118,12 @@ See [evaluation-lifecycle.md](evaluation-lifecycle.md) for the full state machin
 
 ## Quality attributes
 
-| Attribute | How it is achieved |
-|-----------|--------------------|
-| **Testability** | Pure domain + ports; fast Vitest unit tier with no I/O; Testcontainers for integration. |
-| **Reliability** | Async pipeline with retries, backoff, idempotency, and a DLQ ([ADR 0003](../adr/0003-bullmq-evaluation-pipeline.md)). |
-| **Traceability** | Correlation ids across API + jobs; append-only history + audit log ([ADR 0009](../adr/0009-audit-log-and-immutability.md)). |
-| **Security** | JWT + RBAC ([ADR 0005](../adr/0005-authentication-and-rbac.md)); argon2; rate limiting; no in-process execution of untrusted code. |
-| **Correctness at the edge** | Zod validation + generated OpenAPI ([ADR 0006](../adr/0006-zod-validation-and-openapi.md)). |
-| **Scalability** | Stateless API + separate workers; Redis-shared limits/queues; horizontal scale. |
-| **Operability** | Structured JSON logs, health/readiness endpoints, typed config that fails fast. |
+| Attribute                   | How it is achieved                                                                                                                 |
+| --------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **Testability**             | Pure domain + ports; fast Vitest unit tier with no I/O; Testcontainers for integration.                                            |
+| **Reliability**             | Async pipeline with retries, backoff, idempotency, and a DLQ ([ADR 0003](../adr/0003-bullmq-evaluation-pipeline.md)).              |
+| **Traceability**            | Correlation ids across API + jobs; append-only history + audit log ([ADR 0009](../adr/0009-audit-log-and-immutability.md)).        |
+| **Security**                | JWT + RBAC ([ADR 0005](../adr/0005-authentication-and-rbac.md)); argon2; rate limiting; no in-process execution of untrusted code. |
+| **Correctness at the edge** | Zod validation + generated OpenAPI ([ADR 0006](../adr/0006-zod-validation-and-openapi.md)).                                        |
+| **Scalability**             | Stateless API + separate workers; Redis-shared limits/queues; horizontal scale.                                                    |
+| **Operability**             | Structured JSON logs, health/readiness endpoints, typed config that fails fast.                                                    |

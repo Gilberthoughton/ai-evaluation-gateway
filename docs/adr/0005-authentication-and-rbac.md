@@ -22,12 +22,12 @@ candidate for machine submitters (batch upload of model outputs).
 enforced by a Fastify auth decorator/preHandler (`requireRole(...)`) on each route, and resource-level
 checks (e.g. a reviewer may only score evaluations assigned to them) live in the application layer.
 
-| Capability | submitter | reviewer | admin |
-|------------|:--------:|:-------:|:----:|
-| Create prompts / submissions | ✅ | | ✅ |
-| View own submissions & results | ✅ | ✅ | ✅ |
-| Score assigned evaluations | | ✅ | ✅ |
-| Manage rubrics / users / finalize / audit / analytics | | | ✅ |
+| Capability                                            | submitter | reviewer | admin |
+| ----------------------------------------------------- | :-------: | :------: | :---: |
+| Create prompts / submissions                          |    ✅     |          |  ✅   |
+| View own submissions & results                        |    ✅     |    ✅    |  ✅   |
+| Score assigned evaluations                            |           |    ✅    |  ✅   |
+| Manage rubrics / users / finalize / audit / analytics |           |          |  ✅   |
 
 ## Consequences
 

@@ -195,11 +195,11 @@ CREATE INDEX idx_audit_actor  ON audit_logs (actor_id, occurred_at);
 
 ## How the model enforces the architecture
 
-| Guarantee | Enforced by |
-|-----------|-------------|
-| Attributable actions | FKs to `users`; `actor_id` on history + audit. |
-| Immutable history | `evaluation_events` / `audit_logs` append-only; app DB role lacks UPDATE/DELETE on them. |
-| Immutable scores & rubrics | Versioned rows (`reviewer_scores.version`, `rubric_versions.version`); corrections add versions. |
-| Point-in-time reconstruction | Fold `evaluation_events` up to a timestamp. |
-| Comparison data for preference training | `comparisons` + `comparison_items` (ranking / pairwise). |
-| Service isolation | The two deployables (API, worker) share one schema now; tables are grouped so a future split is localized. |
+| Guarantee                               | Enforced by                                                                                                |
+| --------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| Attributable actions                    | FKs to `users`; `actor_id` on history + audit.                                                             |
+| Immutable history                       | `evaluation_events` / `audit_logs` append-only; app DB role lacks UPDATE/DELETE on them.                   |
+| Immutable scores & rubrics              | Versioned rows (`reviewer_scores.version`, `rubric_versions.version`); corrections add versions.           |
+| Point-in-time reconstruction            | Fold `evaluation_events` up to a timestamp.                                                                |
+| Comparison data for preference training | `comparisons` + `comparison_items` (ranking / pairwise).                                                   |
+| Service isolation                       | The two deployables (API, worker) share one schema now; tables are grouped so a future split is localized. |

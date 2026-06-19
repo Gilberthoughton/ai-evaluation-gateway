@@ -31,8 +31,8 @@ Reliability properties:
 - **Concurrency & rate control:** worker concurrency and limiter settings bound load on Postgres and
   any external analyzers.
 
-> **Security note.** Automated checks operate on *untrusted* model output. The default checks are
-> **static/structural only** (no execution of submitted code). Any future capability that *runs*
+> **Security note.** Automated checks operate on _untrusted_ model output. The default checks are
+> **static/structural only** (no execution of submitted code). Any future capability that _runs_
 > submitted code MUST do so in an isolated sandbox (no network, CPU/memory/time limits, ephemeral
 > filesystem) — never in the worker process. This is a hard requirement, not a later nicety.
 
@@ -57,6 +57,6 @@ Reliability properties:
   mature dashboard, and Redis is needed anyway; pg-boss remains a viable fallback if Redis is dropped.
 - **Synchronous in-request evaluation (rejected):** ties up the API, no retries, fails the whole request
   on a transient analyzer error.
-- **Kafka (rejected):** excellent for event streaming, but this is *work distribution with per-job acks,
-  retries, and dead-lettering* — a job queue, not an event log. (See the order-platform project for the
+- **Kafka (rejected):** excellent for event streaming, but this is _work distribution with per-job acks,
+  retries, and dead-lettering_ — a job queue, not an event log. (See the order-platform project for the
   Kafka-vs-queue distinction.)

@@ -15,7 +15,7 @@ exposed through clean, documented REST APIs for analysis.
 
 ## Why this project exists
 
-Modern AI training depends on *evaluation infrastructure*: pipelines that take model outputs, run
+Modern AI training depends on _evaluation infrastructure_: pipelines that take model outputs, run
 automated checks, route them to human reviewers, capture rubric-based scores and feedback, compare
 candidate outputs, and keep an auditable history for analysis. This service is a focused, production-
 shaped backend for exactly that problem — built to mirror real AI-engineering work rather than a
@@ -34,21 +34,21 @@ It is designed to demonstrate the engineering an AI-training / Node.js backend r
 
 ## What it demonstrates
 
-| Area | How |
-|------|-----|
-| **Node.js + TypeScript** | Strict TS, ESM, clean layered architecture (domain / application / infrastructure / interface). |
-| **HTTP framework** | **Fastify** — schema-first, fast, first-class TypeScript ([ADR 0001](docs/adr/0001-fastify-over-express.md)). |
-| **PostgreSQL** | **Drizzle ORM** + drizzle-kit migrations; SQL-explicit data layer ([ADR 0002](docs/adr/0002-drizzle-orm.md)). |
-| **Redis + queues** | **BullMQ** evaluation pipeline: workers, retries, DLQ, idempotency ([ADR 0003](docs/adr/0003-bullmq-evaluation-pipeline.md)). |
-| **REST API design** | Resource-oriented, versioned, paginated; full contract in [api-design.md](docs/architecture/api-design.md). |
-| **Authentication & roles** | JWT access/refresh + RBAC (`admin` / `reviewer` / `submitter`), argon2 hashing ([ADR 0005](docs/adr/0005-authentication-and-rbac.md)). |
-| **Rate limiting** | Redis-backed, distributed, per-identity ([ADR 0007](docs/adr/0007-rate-limiting.md)). |
-| **Validation & types** | **Zod** as the single source of truth → request validation **and** generated OpenAPI ([ADR 0006](docs/adr/0006-zod-validation-and-openapi.md)). |
-| **Structured logging & errors** | **pino** JSON logs + correlation IDs; RFC 7807 problem responses ([ADR 0008](docs/adr/0008-logging-and-error-model.md)). |
-| **Auditability** | Append-only audit log + immutable evaluation history ([ADR 0009](docs/adr/0009-audit-log-and-immutability.md)). |
-| **Testing** | **Vitest** unit tests + Testcontainers integration (Postgres + Redis); `app.inject()` API tests. |
-| **Docker & CI/CD** | Multi-stage Dockerfile, `docker compose` dev stack, **GitHub Actions** (lint, typecheck, test, build, image). |
-| **API documentation** | OpenAPI 3 generated from Zod; Swagger UI at `/docs`. |
+| Area                            | How                                                                                                                                             |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Node.js + TypeScript**        | Strict TS, ESM, clean layered architecture (domain / application / infrastructure / interface).                                                 |
+| **HTTP framework**              | **Fastify** — schema-first, fast, first-class TypeScript ([ADR 0001](docs/adr/0001-fastify-over-express.md)).                                   |
+| **PostgreSQL**                  | **Drizzle ORM** + drizzle-kit migrations; SQL-explicit data layer ([ADR 0002](docs/adr/0002-drizzle-orm.md)).                                   |
+| **Redis + queues**              | **BullMQ** evaluation pipeline: workers, retries, DLQ, idempotency ([ADR 0003](docs/adr/0003-bullmq-evaluation-pipeline.md)).                   |
+| **REST API design**             | Resource-oriented, versioned, paginated; full contract in [api-design.md](docs/architecture/api-design.md).                                     |
+| **Authentication & roles**      | JWT access/refresh + RBAC (`admin` / `reviewer` / `submitter`), argon2 hashing ([ADR 0005](docs/adr/0005-authentication-and-rbac.md)).          |
+| **Rate limiting**               | Redis-backed, distributed, per-identity ([ADR 0007](docs/adr/0007-rate-limiting.md)).                                                           |
+| **Validation & types**          | **Zod** as the single source of truth → request validation **and** generated OpenAPI ([ADR 0006](docs/adr/0006-zod-validation-and-openapi.md)). |
+| **Structured logging & errors** | **pino** JSON logs + correlation IDs; RFC 7807 problem responses ([ADR 0008](docs/adr/0008-logging-and-error-model.md)).                        |
+| **Auditability**                | Append-only audit log + immutable evaluation history ([ADR 0009](docs/adr/0009-audit-log-and-immutability.md)).                                 |
+| **Testing**                     | **Vitest** unit tests + Testcontainers integration (Postgres + Redis); `app.inject()` API tests.                                                |
+| **Docker & CI/CD**              | Multi-stage Dockerfile, `docker compose` dev stack, **GitHub Actions** (lint, typecheck, test, build, image).                                   |
+| **API documentation**           | OpenAPI 3 generated from Zod; Swagger UI at `/docs`.                                                                                            |
 
 ## Architecture at a glance
 
@@ -76,23 +76,23 @@ and the [data model](docs/architecture/data-model.md).
 
 ## Technology
 
-| Technology | Role |
-|------------|------|
-| **Node.js 20 + TypeScript (strict, ESM)** | Runtime and language |
-| **Fastify** | HTTP framework |
-| **PostgreSQL + Drizzle ORM (drizzle-kit)** | Persistence + migrations |
-| **Redis + BullMQ** | Background workers / evaluation queues |
-| **Zod** | Validation + OpenAPI generation |
-| **pino** | Structured JSON logging |
-| **argon2 + JWT** | Auth (hashing + tokens) |
-| **Vitest + Testcontainers** | Unit + integration testing |
-| **Docker / Docker Compose** | Containerization + local stack |
-| **GitHub Actions** | CI/CD |
-| **OpenAPI 3 + Swagger UI** | API documentation |
+| Technology                                 | Role                                   |
+| ------------------------------------------ | -------------------------------------- |
+| **Node.js 20 + TypeScript (strict, ESM)**  | Runtime and language                   |
+| **Fastify**                                | HTTP framework                         |
+| **PostgreSQL + Drizzle ORM (drizzle-kit)** | Persistence + migrations               |
+| **Redis + BullMQ**                         | Background workers / evaluation queues |
+| **Zod**                                    | Validation + OpenAPI generation        |
+| **pino**                                   | Structured JSON logging                |
+| **argon2 + JWT**                           | Auth (hashing + tokens)                |
+| **Vitest + Testcontainers**                | Unit + integration testing             |
+| **Docker / Docker Compose**                | Containerization + local stack         |
+| **GitHub Actions**                         | CI/CD                                  |
+| **OpenAPI 3 + Swagger UI**                 | API documentation                      |
 
 ## Roadmap
 
-- **Phase 0 — Architecture** *(current)*: ADRs, C4 + domain/API/data/lifecycle docs.
+- **Phase 0 — Architecture** _(current)_: ADRs, C4 + domain/API/data/lifecycle docs.
 - **Phase 1 — Core API + persistence**: auth + RBAC, prompts, submissions, rubrics; Drizzle schema +
   migrations; Zod validation + OpenAPI; structured logging, error model, config; Vitest + integration tests.
 - **Phase 2 — Evaluation pipeline**: BullMQ queues + workers (automated checks), evaluation state
@@ -102,7 +102,7 @@ and the [data model](docs/architecture/data-model.md).
 - **Phase 4 — Analysis & hardening**: analytics endpoints (score aggregates, reviewer agreement,
   model leaderboard), rate limiting, metrics/health, Docker + GitHub Actions CI/CD.
 
-## Local development *(target — lands in Phase 1)*
+## Local development _(target — lands in Phase 1)_
 
 ```bash
 docker compose up -d          # PostgreSQL + Redis
