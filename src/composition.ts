@@ -2,9 +2,11 @@ import { AuthService } from './application/auth/authService.js';
 import { systemClock } from './application/auth/ports.js';
 import { UserService } from './application/auth/userService.js';
 import { PromptService } from './application/prompts/promptService.js';
+import { RubricService } from './application/rubrics/rubricService.js';
 import type { AppConfig } from './config/config.js';
 import { createDb, type DbHandle } from './infrastructure/db/client.js';
 import { createPromptRepository } from './infrastructure/db/repositories/promptRepository.js';
+import { createRubricRepository } from './infrastructure/db/repositories/rubricRepository.js';
 import { createRefreshTokenRepository } from './infrastructure/db/repositories/refreshTokenRepository.js';
 import { createSubmissionRepository } from './infrastructure/db/repositories/submissionRepository.js';
 import { createUserRepository } from './infrastructure/db/repositories/userRepository.js';
@@ -44,11 +46,17 @@ export function compose(config: AppConfig, logger: Logger): Composition {
     createPromptRepository(dbHandle.db),
     createSubmissionRepository(dbHandle.db),
   );
+  const rubricService = new RubricService(createRubricRepository(dbHandle.db));
 
   const deps: AppDeps = {
     config,
     logger,
-    services: { auth: authService, users: userService, prompts: promptService },
+    services: {
+      auth: authService,
+      users: userService,
+      prompts: promptService,
+      rubrics: rubricService,
+    },
     verifyAccessToken: (token) => accessTokens.verify(token),
     readinessChecks: [{ name: 'postgres', check: () => dbHandle.ping() }],
   };

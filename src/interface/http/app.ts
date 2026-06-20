@@ -16,6 +16,7 @@ import { healthRoutes } from './routes/health.js';
 import { authRoutes } from './routes/auth.js';
 import { userRoutes } from './routes/users.js';
 import { promptRoutes } from './routes/prompts.js';
+import { rubricRoutes } from './routes/rubrics.js';
 import type { AppDeps } from './types.js';
 
 export type { AppDeps, ReadinessCheck, Services } from './types.js';
@@ -75,6 +76,7 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
       await api.register(authRoutes, { deps });
       await api.register(userRoutes, { deps });
       await api.register(promptRoutes, { deps });
+      await api.register(rubricRoutes, { deps });
     },
     { prefix: '/api/v1' },
   );
