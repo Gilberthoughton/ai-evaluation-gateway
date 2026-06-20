@@ -1,6 +1,7 @@
 import type { AppConfig } from '../../config/config.js';
 import type { AuthService } from '../../application/auth/authService.js';
 import type { UserService } from '../../application/auth/userService.js';
+import type { EvaluationService } from '../../application/evaluations/evaluationService.js';
 import type { PromptService } from '../../application/prompts/promptService.js';
 import type { RubricService } from '../../application/rubrics/rubricService.js';
 import type { Role } from '../../domain/roles.js';
@@ -18,6 +19,7 @@ export interface Services {
   users: UserService;
   prompts: PromptService;
   rubrics: RubricService;
+  evaluations: EvaluationService;
 }
 
 /** Everything the HTTP layer needs, injected at the composition root (ADR 0004). */
