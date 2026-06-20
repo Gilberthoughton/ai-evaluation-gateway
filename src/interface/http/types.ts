@@ -21,6 +21,6 @@ export interface AppDeps {
   config: AppConfig;
   logger: Logger;
   services: Services;
-  verifyAccessToken(token: string): { sub: string; role: Role };
+  verifyAccessToken: (token: string) => { sub: string; role: Role };
   readinessChecks?: ReadinessCheck[];
 }
