@@ -1,7 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify';
 import { z } from 'zod';
 import type { ZodTypeProvider } from 'fastify-type-provider-zod';
-import type { AppDeps } from '../app.js';
+import type { AppDeps } from '../types.js';
 
 const checkResult = z.object({ name: z.string(), ok: z.boolean() });
 

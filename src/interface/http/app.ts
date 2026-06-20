@@ -10,27 +10,19 @@ import {
   jsonSchemaTransform,
   type ZodTypeProvider,
 } from 'fastify-type-provider-zod';
-import type { AppConfig } from '../../config/config.js';
-import type { Logger } from '../../infrastructure/observability/logger.js';
 import { registerErrorHandler } from './problem.js';
+import { authPlugin } from './plugins/auth.js';
 import { healthRoutes } from './routes/health.js';
+import { authRoutes } from './routes/auth.js';
+import { userRoutes } from './routes/users.js';
+import type { AppDeps } from './types.js';
 
-/** A named readiness probe; a throw means "not ready". */
-export interface ReadinessCheck {
-  name: string;
-  check(): Promise<void>;
-}
-
-/** Everything the HTTP layer needs, injected at the composition root (ADR 0004). */
-export interface AppDeps {
-  config: AppConfig;
-  logger: Logger;
-  readinessChecks?: ReadinessCheck[];
-}
+export type { AppDeps, ReadinessCheck, Services } from './types.js';
 
 /**
  * Builds (but does not start) the Fastify application: Zod validation/serialization, security
- * headers, CORS, OpenAPI docs, correlation-id propagation, the RFC 7807 error handler, and routes.
+ * headers, CORS, OpenAPI docs, correlation-id propagation, the RFC 7807 error handler, auth/RBAC,
+ * and the API routes (versioned under /api/v1).
  */
 export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
   const app = Fastify({
@@ -73,7 +65,17 @@ export async function buildApp(deps: AppDeps): Promise<FastifyInstance> {
 
   registerErrorHandler(app);
 
+  await app.register(authPlugin, { verify: deps.verifyAccessToken });
+
+  // Ops endpoints at the root; the versioned API under /api/v1.
   await app.register(healthRoutes, { deps });
+  await app.register(
+    async (api) => {
+      await api.register(authRoutes, { deps });
+      await api.register(userRoutes, { deps });
+    },
+    { prefix: '/api/v1' },
+  );
 
   return app;
 }

@@ -1,14 +1,13 @@
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 import { buildApp } from '../../src/interface/http/app.js';
-import { createLogger } from '../../src/infrastructure/observability/logger.js';
-import { testConfig } from '../helpers/testConfig.js';
+import { buildTestDeps } from '../helpers/testDeps.js';
 
 describe('health & readiness', () => {
   let app: FastifyInstance;
 
   beforeAll(async () => {
-    app = await buildApp({ config: testConfig, logger: createLogger(testConfig) });
+    app = await buildApp(buildTestDeps());
     await app.ready();
   });
 
