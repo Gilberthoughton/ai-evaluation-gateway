@@ -81,7 +81,7 @@ and the [data model](docs/architecture/data-model.md).
 
 | Technology                                 | Role                                   |
 | ------------------------------------------ | -------------------------------------- |
-| **Node.js 20 + TypeScript (strict, ESM)**  | Runtime and language                   |
+| **Node.js 22 + TypeScript (strict, ESM)**  | Runtime and language                   |
 | **Fastify**                                | HTTP framework                         |
 | **PostgreSQL + Drizzle ORM (drizzle-kit)** | Persistence + migrations               |
 | **Redis + BullMQ**                         | Background workers / evaluation queues |
