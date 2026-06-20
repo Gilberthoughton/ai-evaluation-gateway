@@ -7,9 +7,12 @@ coding **prompts** and the **model outputs** that answer them; each output is ro
 **rubric**); results, **model-output comparisons**, and an immutable **audit trail** are stored and
 exposed through clean, documented REST APIs for analysis.
 
-> **Project status:** Phase 0 — architecture. This repository currently contains the design
-> ([`docs/`](docs/): ADRs + C4/domain/API/data/lifecycle views). Implementation begins in Phase 1.
-> No application code is committed yet.
+> **Project status:** Phase 1 implemented and tested. On top of the Phase 0 design
+> ([`docs/`](docs/): 9 ADRs + C4/domain/API/data/lifecycle views), the service is built in
+> strict TypeScript on Fastify: typed config + structured logging + RFC 7807 errors, JWT auth +
+> RBAC, PostgreSQL via Drizzle (migrated), prompt/submission/rubric/evaluation endpoints (Zod-
+> validated, OpenAPI), and the async evaluation pipeline on Redis/BullMQ. **39 tests pass**
+> (17 unit + 22 Testcontainers integration); CI runs typecheck, lint, build, and tests on every push.
 
 ---
 
@@ -92,25 +95,33 @@ and the [data model](docs/architecture/data-model.md).
 
 ## Roadmap
 
-- **Phase 0 — Architecture** _(current)_: ADRs, C4 + domain/API/data/lifecycle docs.
-- **Phase 1 — Core API + persistence**: auth + RBAC, prompts, submissions, rubrics; Drizzle schema +
-  migrations; Zod validation + OpenAPI; structured logging, error model, config; Vitest + integration tests.
-- **Phase 2 — Evaluation pipeline**: BullMQ queues + workers (automated checks), evaluation state
-  machine + history, idempotency, retries, DLQ.
-- **Phase 3 — Reviewer workflow**: assignment, rubric-based scoring, model-output comparison/ranking,
-  audit log.
-- **Phase 4 — Analysis & hardening**: analytics endpoints (score aggregates, reviewer agreement,
-  model leaderboard), rate limiting, metrics/health, Docker + GitHub Actions CI/CD.
+- **Phase 0 — Architecture** _(done)_: ADRs, C4 + domain/API/data/lifecycle docs.
+- **Phase 1 — Core API, persistence & pipeline** _(done)_: typed config, structured logging, RFC 7807
+  errors; JWT auth + RBAC; PostgreSQL via Drizzle (schema + migration); prompt/submission/rubric/
+  evaluation endpoints (Zod + OpenAPI); the evaluation state machine; Redis/BullMQ async pipeline with a
+  worker; Docker + GitHub Actions CI; Vitest unit + Testcontainers integration tests.
+- **Phase 2 — Reviewer workflow**: reviewer assignment, rubric-based scoring, model-output
+  comparison/ranking, and the append-only audit log surfaced via APIs.
+- **Phase 3 — Analysis & hardening**: analytics endpoints (score aggregates, reviewer agreement,
+  model leaderboard), distributed rate limiting, metrics, and a load test.
 
-## Local development _(target — lands in Phase 1)_
+## Local development
 
 ```bash
 docker compose up -d          # PostgreSQL + Redis
 pnpm install
-pnpm db:migrate               # drizzle-kit migrations
+pnpm db:migrate               # apply Drizzle migrations
 pnpm dev                      # Fastify API (http://localhost:3000), Swagger UI at /docs
-pnpm worker                   # BullMQ evaluation workers
-pnpm test                     # Vitest unit + integration tests
+pnpm worker                   # BullMQ evaluation worker (processes automated checks)
+```
+
+### Quality checks
+
+```bash
+pnpm typecheck                # strict tsc
+pnpm lint                     # ESLint (type-checked rules)
+pnpm test:unit                # fast unit tests (no Docker)
+pnpm test:integration         # integration tests (Testcontainers: Postgres + Redis; requires Docker)
 ```
 
 ## License
