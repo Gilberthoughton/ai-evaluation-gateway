@@ -1,9 +1,12 @@
 import { AuthService } from './application/auth/authService.js';
 import { systemClock } from './application/auth/ports.js';
 import { UserService } from './application/auth/userService.js';
+import { PromptService } from './application/prompts/promptService.js';
 import type { AppConfig } from './config/config.js';
 import { createDb, type DbHandle } from './infrastructure/db/client.js';
+import { createPromptRepository } from './infrastructure/db/repositories/promptRepository.js';
 import { createRefreshTokenRepository } from './infrastructure/db/repositories/refreshTokenRepository.js';
+import { createSubmissionRepository } from './infrastructure/db/repositories/submissionRepository.js';
 import { createUserRepository } from './infrastructure/db/repositories/userRepository.js';
 import { argon2PasswordHasher } from './infrastructure/security/argon2PasswordHasher.js';
 import { createAccessTokens } from './infrastructure/security/jwt.js';
@@ -37,11 +40,15 @@ export function compose(config: AppConfig, logger: Logger): Composition {
     { refreshSecret: config.JWT_REFRESH_SECRET, refreshTtlSeconds: config.JWT_REFRESH_TTL },
   );
   const userService = new UserService(userRepository, argon2PasswordHasher);
+  const promptService = new PromptService(
+    createPromptRepository(dbHandle.db),
+    createSubmissionRepository(dbHandle.db),
+  );
 
   const deps: AppDeps = {
     config,
     logger,
-    services: { auth: authService, users: userService },
+    services: { auth: authService, users: userService, prompts: promptService },
     verifyAccessToken: (token) => accessTokens.verify(token),
     readinessChecks: [{ name: 'postgres', check: () => dbHandle.ping() }],
   };

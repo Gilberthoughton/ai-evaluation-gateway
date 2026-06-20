@@ -1,6 +1,7 @@
 import type { AppConfig } from '../../config/config.js';
 import type { AuthService } from '../../application/auth/authService.js';
 import type { UserService } from '../../application/auth/userService.js';
+import type { PromptService } from '../../application/prompts/promptService.js';
 import type { Role } from '../../domain/roles.js';
 import type { Logger } from '../../infrastructure/observability/logger.js';
 
@@ -14,6 +15,7 @@ export interface ReadinessCheck {
 export interface Services {
   auth: AuthService;
   users: UserService;
+  prompts: PromptService;
 }
 
 /** Everything the HTTP layer needs, injected at the composition root (ADR 0004). */

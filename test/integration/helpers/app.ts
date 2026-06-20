@@ -2,6 +2,7 @@ import { inject } from 'vitest';
 import type { FastifyInstance } from 'fastify';
 import { compose, type Composition } from '../../../src/composition.js';
 import type { AppConfig } from '../../../src/config/config.js';
+import type { Role } from '../../../src/domain/roles.js';
 import { createLogger } from '../../../src/infrastructure/observability/logger.js';
 import { buildApp } from '../../../src/interface/http/app.js';
 import { testConfig } from '../../helpers/testConfig.js';
@@ -30,4 +31,17 @@ export async function buildIntegrationApp(): Promise<IntegrationApp> {
       await composition.close();
     },
   };
+}
+
+/** Seeds a user with the given role and returns a valid access token for it. */
+export async function seedUserAndLogin(ctx: IntegrationApp, role: Role): Promise<string> {
+  const email = `${role.toLowerCase()}-${crypto.randomUUID()}@example.com`;
+  const password = 'password123';
+  await ctx.composition.deps.services.users.createUser({ email, password, role });
+  const res = await ctx.app.inject({
+    method: 'POST',
+    url: '/api/v1/auth/login',
+    payload: { email, password },
+  });
+  return res.json().accessToken as string;
 }
