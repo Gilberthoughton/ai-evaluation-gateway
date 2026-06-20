@@ -27,8 +27,12 @@ export default tseslint.config(
   {
     files: ['test/**/*.ts'],
     rules: {
+      // Fastify's inject().json() returns `any`; relax unsafe-* in tests where we assert on it.
       '@typescript-eslint/no-unsafe-assignment': 'off',
       '@typescript-eslint/no-unsafe-member-access': 'off',
+      '@typescript-eslint/no-unsafe-call': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
+      '@typescript-eslint/no-unsafe-argument': 'off',
     },
   },
   prettier,
