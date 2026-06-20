@@ -1,12 +1,10 @@
 import { defineConfig } from 'vitest/config';
 
+/** Unit tests — pure/fast, no external services or Docker. */
 export default defineConfig({
   test: {
     environment: 'node',
-    include: ['test/**/*.test.ts'],
-    // Integration tests start real containers; give them room and run files serially.
-    testTimeout: 60_000,
-    hookTimeout: 120_000,
+    include: ['test/unit/**/*.test.ts'],
     coverage: {
       provider: 'v8',
       include: ['src/**/*.ts'],
